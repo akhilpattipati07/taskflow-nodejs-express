@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow — Smart Colorful Premium Glass Workspace</title>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('taskflow_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <!-- Ambient Multi-Layer Color Glows & Blobs -->
+  <div class="bg-ambient-blob blob-purple"></div>
+  <div class="bg-ambient-blob blob-peach"></div>
+  <div class="bg-ambient-blob blob-blue"></div>
+  <div class="bg-ambient-blob blob-mint"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="app-layout">
+    
+    <!-- ======================================================
+         FLOATING FROSTED GLASS SIDEBAR (LEVEL 1)
+         ====================================================== -->
+    <aside class="sidebar">
+      <a href="/" class="sidebar-brand">
+        <div class="brand-icon">⚡</div>
+        <span class="brand-name">TASKFLOW</span>
+      </a>
+
+      <nav class="sidebar-nav">
+        <div class="nav-label">Workspace</div>
+        <a href="/" class="nav-item active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          Dashboard
+          <span class="nav-badge" id="sidebarTotalBadge">{{TOTAL_TASKS}}</span>
+        </a>
+
+        <a href="#tasksSection" class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          All Tasks
+        </a>
+
+        <a href="#createSection" class="nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          Create Task
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="live-indicator" id="liveSyncPill">
+          <div class="pulse-dot" id="ssePulseDot"></div>
+          <span id="sseStatusText">Live</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ======================================================
+         MAIN EDITORIAL CONTENT
+         ====================================================== -->
+    <main class="main-content">
+      
+      <!-- Floating Glass Header -->
+      <header class="top-header">
+        <div class="header-title-group">
+          <h1 class="header-title">Dashboard</h1>
+          <div class="header-clock" id="liveClock">--:--:--</div>
+        </div>
+
+        <div class="header-actions">
+          <!-- Glass Search Trigger Pill -->
+          <button type="button" class="search-trigger-pill" onclick="openCommandPalette()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Search & Commands</span>
+            <span class="kbd-badge">⌘K</span>
+          </button>
+
+          <!-- Theme Toggle Glass Icon Button -->
+          <button type="button" class="glass-icon-btn" id="themeToggleBtn" title="Toggle Theme" onclick="toggleTheme()">
+            <svg id="themeMoonIcon" style="display: none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="themeSunIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-body" style="display: flex; flex-direction: column; gap: 20px;">
+
+        <!-- Error Alert from Server -->
+        {{ERROR_MESSAGE}}
+
+        <!-- Dimensional Editorial Hero Card with Smart Accents & Floating Shapes -->
+        <section class="hero-card mouse-light-target">
+          <div class="hero-shape-orb hero-orb-1"></div>
+          <div class="hero-shape-orb hero-orb-2"></div>
+
+          <div class="hero-text">
+            <div class="hero-eyebrow">Your Workspace</div>
+            <h2 id="greetingHeading">Good morning.</h2>
+            <p>A calm, intelligent space to organize what matters with clarity.</p>
+          </div>
+          <a href="#createSection" class="glass-btn glass-btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Create Task
+          </a>
+        </section>
+
+        <!-- Floating Glass Statistics Cards with Smart Identity (Zero Fake Data) -->
+        <section class="stats-grid">
+          <!-- Total Tasks (Purple Accent) -->
+          <div class="stat-card stat-purple mouse-light-target">
+            <div class="stat-header">
+              <span class="stat-label">Total Tasks</span>
+              <div class="stat-icon-box">✦</div>
+            </div>
+            <div class="stat-value" id="statTotal">{{TOTAL_TASKS}}</div>
+            <div class="stat-subtext" id="statFilesSubtext">{{FILES_COUNT}} files in /tasks</div>
+          </div>
+
+          <!-- Completed Tasks (Mint Accent) -->
+          <div class="stat-card stat-mint mouse-light-target">
+            <div class="stat-header">
+              <span class="stat-label">Completed</span>
+              <div class="stat-icon-box">✓</div>
+            </div>
+            <div class="stat-value" id="statCompleted">{{COMPLETED_TASKS}}</div>
+            <div class="stat-progress-bar">
+              <div class="stat-progress-fill" id="completedProgressFill" style="width: 0%;"></div>
+            </div>
+            <div class="stat-subtext" id="statCompletedSubtext">Finished tasks</div>
+          </div>
+
+          <!-- Pending Tasks (Blue Accent) -->
+          <div class="stat-card stat-blue mouse-light-target">
+            <div class="stat-header">
+              <span class="stat-label">Pending</span>
+              <div class="stat-icon-box">⌛</div>
+            </div>
+            <div class="stat-value" id="statPending">{{PENDING_TASKS}}</div>
+            <div class="stat-subtext">In progress</div>
+          </div>
+
+          <!-- High Priority Tasks (Peach Accent) -->
+          <div class="stat-card stat-peach mouse-light-target">
+            <div class="stat-header">
+              <span class="stat-label">High Priority</span>
+              <div class="stat-icon-box">🔥</div>
+            </div>
+            <div class="stat-value" id="statHigh">{{HIGH_PRIORITY_TASKS}}</div>
+            <div class="stat-subtext">Requires focus</div>
+          </div>
+        </section>
+
+        <!-- Productivity Insights Panel (Real Data Only) -->
+        <section class="insights-panel" id="insightsSection" style="display: none;">
+          <div class="insights-header">
+            <div class="insights-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-primary);">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+              Productivity Overview
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Live Filesystem Metrics</span>
+          </div>
+          <div class="insights-grid">
+            <div class="insight-item">
+              <div class="insight-metric" id="insightRate" style="color: var(--accent-mint);">0%</div>
+              <div class="insight-label">Completion Rate</div>
+            </div>
+            <div class="insight-item">
+              <div class="insight-metric" id="insightDueToday" style="color: var(--accent-gold);">0</div>
+              <div class="insight-label">Due Today</div>
+            </div>
+            <div class="insight-item">
+              <div class="insight-metric" id="insightOverdue" style="color: var(--accent-danger);">0</div>
+              <div class="insight-label">Overdue Tasks</div>
+            </div>
+            <div class="insight-item">
+              <div class="insight-metric" id="insightDueSoon" style="color: var(--accent-blue);">0</div>
+              <div class="insight-label">Due This Week</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2-Column Dashboard Widgets: Recent & Upcoming -->
+        <section class="widgets-grid">
+          <!-- Recent Tasks Widget -->
+          <div class="widget-panel">
+            <div class="widget-header">
+              <h3 class="widget-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                Recent Tasks
+              </h3>
+              <span style="font-size: 0.70rem; color: var(--text-muted); font-family: var(--font-mono);">Latest created</span>
+            </div>
+            <div class="widget-list" id="recentTasksList">
+              {{RECENT_TASKS_HTML}}
+            </div>
+          </div>
+
+          <!-- Upcoming Tasks Widget -->
+          <div class="widget-panel">
+            <div class="widget-header">
+              <h3 class="widget-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Upcoming Tasks
+              </h3>
+              <span style="font-size: 0.70rem; color: var(--text-muted); font-family: var(--font-mono);">By due date</span>
+            </div>
+            <div class="widget-list" id="upcomingTasksList">
+              {{UPCOMING_TASKS_HTML}}
+            </div>
+          </div>
+        </section>
+
+        <!-- Create Task Floating Glass Section -->
+        <section class="section-panel mouse-light-target" id="createSection">
+          <div class="panel-header">
+            <h2 class="panel-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Create a new task
+            </h2>
+            <span style="font-size: 0.74rem; color: var(--text-muted); font-family: var(--font-mono);">
+              fs.writeFile() &rarr; tasks/*.txt
+            </span>
+          </div>
+
+          <form action="/create" method="POST" id="createTaskForm" onsubmit="handleCreateSubmit(event)">
+            <div class="form-grid">
+              <div class="form-group" style="margin-bottom: 0;">
+                <div class="form-label-row">
+                  <label class="form-label" for="taskTitle">Title *</label>
+                  <span class="char-counter" id="titleCharCount">0/100</span>
+                </div>
+                <input 
+                  type="text" 
+                  id="taskTitle" 
+                  name="title" 
+                  class="form-control" 
+                  placeholder="Task title..." 
+                  required
+                  maxlength="100"
+                >
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <div class="form-label-row">
+                  <label class="form-label" for="taskCategory">Category</label>
+                </div>
+                <select id="taskCategory" name="category" class="form-control">
+                  <option value="College">College</option>
+                  <option value="Project">Project</option>
+                  <option value="Work">Work</option>
+                  <option value="Personal">Personal</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <div class="form-label-row">
+                  <label class="form-label" for="taskPriority">Priority</label>
+                </div>
+                <select id="taskPriority" name="priority" class="form-control">
+                  <option value="Low">Low</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <div class="form-label-row">
+                  <label class="form-label" for="taskDueDate">Due Date</label>
+                </div>
+                <input 
+                  type="date" 
+                  id="taskDueDate" 
+                  name="dueDate" 
+                  class="form-control"
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label-row">
+                <label class="form-label" for="taskDesc">Description *</label>
+                <span class="char-counter" id="descCharCount">0/1000</span>
+              </div>
+              <textarea 
+                id="taskDesc" 
+                name="description" 
+                class="form-control" 
+                placeholder="Write your task details here..." 
+                rows="4"
+                required
+                maxlength="1000"
+              ></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+              <button type="submit" class="glass-btn glass-btn-primary" id="createBtn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Create Task
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ======================================================
+             TASK LIST, GLASS SEARCH & FILTER PILLS
+             ====================================================== -->
+        <section id="tasksSection">
+          <div class="tasks-toolbar">
+            
+            <!-- Glass Search Input -->
+            <div class="search-input-wrapper">
+              <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input 
+                type="text" 
+                id="taskSearchInput" 
+                class="form-control search-input" 
+                placeholder="Search tasks... (Ctrl K)"
+                oninput="handleSearchAndFilter()"
+              >
+            </div>
+
+            <!-- Glass Filter Pills -->
+            <div class="filter-group">
+              <button type="button" class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+              <button type="button" class="filter-btn" data-filter="pending" onclick="setFilter('pending', this)">Pending</button>
+              <button type="button" class="filter-btn" data-filter="completed" onclick="setFilter('completed', this)">Completed</button>
+              <button type="button" class="filter-btn" data-filter="high" onclick="setFilter('high', this)">High Priority</button>
+              <button type="button" class="filter-btn" data-filter="medium" onclick="setFilter('medium', this)">Medium</button>
+              <button type="button" class="filter-btn" data-filter="low" onclick="setFilter('low', this)">Low</button>
+            </div>
+
+            <!-- Sort Dropdown -->
+            <select id="sortSelect" class="form-control sort-select" onchange="handleSort()">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="az">A &rarr; Z</option>
+              <option value="za">Z &rarr; A</option>
+              <option value="dueDate">Due Date</option>
+            </select>
+          </div>
+
+          <!-- Task Cards Grid Container -->
+          <div id="tasksGridContainer">
+            {{TASK_CARDS}}
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Floating Quick-Create Button (FAB) -->
+  <button type="button" class="floating-create-fab" id="floatingCreateFab" onclick="scrollToCreateTask()" title="Create Task (N)">
+    ＋
+  </button>
+
+  <!-- Interactive Command Palette Modal (⌘K / Ctrl+K) -->
+  <div class="palette-overlay" id="commandPaletteModal" onclick="handlePaletteOverlayClick(event)">
+    <div class="palette-card">
+      <div class="palette-search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted);">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          id="paletteSearchInput" 
+          class="palette-input" 
+          placeholder="Type a command or search tasks..."
+          oninput="filterPaletteCommands()"
+        >
+        <span class="kbd-badge">ESC</span>
+      </div>
+
+      <div class="palette-commands-list" id="paletteCommandsList">
+        <button type="button" class="palette-item" onclick="executePaletteAction('create')">
+          <div class="palette-item-left">
+            <span style="color: var(--accent-primary); font-weight: 700;">＋</span>
+            <span>Create New Task</span>
+          </div>
+          <span class="kbd-badge">N</span>
+        </button>
+
+        <button type="button" class="palette-item" onclick="executePaletteAction('focusSearch')">
+          <div class="palette-item-left">
+            <span style="color: var(--accent-blue);">⌕</span>
+            <span>Search Tasks</span>
+          </div>
+          <span class="kbd-badge">S</span>
+        </button>
+
+        <button type="button" class="palette-item" onclick="executePaletteAction('filterAll')">
+          <div class="palette-item-left">
+            <span style="color: var(--text-muted);">⊞</span>
+            <span>Show All Tasks</span>
+          </div>
+        </button>
+
+        <button type="button" class="palette-item" onclick="executePaletteAction('filterPending')">
+          <div class="palette-item-left">
+            <span style="color: var(--accent-blue);">⏳</span>
+            <span>Show Pending Tasks</span>
+          </div>
+        </button>
+
+        <button type="button" class="palette-item" onclick="executePaletteAction('filterCompleted')">
+          <div class="palette-item-left">
+            <span style="color: var(--accent-mint);">✓</span>
+            <span>Show Completed Tasks</span>
+          </div>
+        </button>
+
+        <button type="button" class="palette-item" onclick="executePaletteAction('filterHigh')">
+          <div class="palette-item-left">
+            <span style="color: var(--accent-peach);">🔥</span>
+            <span>Show High Priority Tasks</span>
+          </div>
+        </button>
+
+        <button type="button" class="palette-item" onclick="executePaletteAction('toggleTheme')">
+          <div class="palette-item-left">
+            <span style="color: var(--accent-gold);">☼</span>
+            <span>Toggle Theme (Light / Dark)</span>
+          </div>
+          <span class="kbd-badge">T</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Task Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-icon-danger">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </div>
+        <h3 class="modal-title">Delete Task File?</h3>
+      </div>
+      <p class="modal-body">
+        Are you sure you want to permanently delete <strong id="deleteTaskTitle" style="color: var(--text-primary);"></strong>?
+        This removes the <code style="font-family: var(--font-mono); color: var(--accent-danger);">.txt</code> file from the server via <code style="font-family: var(--font-mono);">fs.unlink()</code>.
+      </p>
+      <div class="modal-footer">
+        <button type="button" class="glass-btn glass-btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+        <form id="deleteForm" method="POST" action="" style="display: inline;">
+          <button type="submit" class="glass-btn glass-btn-danger">Delete File</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       INTERACTIVE FRONTEND ENGINE (VANILLA JAVASCRIPT)
+       ====================================================== -->
+  <script>
+    // State
+    let currentFilter = 'all';
+    let currentSort = 'newest';
+    let sseSource = null;
+
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `glass-toast toast-${type}`;
+      
+      let icon = '✓';
+      if (type === 'info') icon = 'ℹ';
+      if (type === 'warning') icon = '⚠';
+      if (type === 'error') icon = '✕';
+
+      toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 300ms ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Check URL parameters for toast alerts
+    (function checkUrlToasts() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('toast') === 'created') showToast('Task file created successfully!', 'success');
+      if (params.get('toast') === 'updated') showToast('Task updated and saved.', 'success');
+      if (params.get('toast') === 'deleted') showToast('Task permanently deleted.', 'info');
+      if (params.get('toast') === 'toggled') showToast('Task status toggled.', 'success');
+      if (params.get('error')) showToast(params.get('error'), 'error');
+      
+      // Clean up URL without reloading
+      if (params.get('toast') || params.get('error')) {
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    })();
+
+    // Live Clock & Dynamic Greeting
+    function updateClockAndGreeting() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      const clockEl = document.getElementById('liveClock');
+      if (clockEl) clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+
+      const greetingEl = document.getElementById('greetingHeading');
+      if (greetingEl) {
+        if (hours < 12) greetingEl.textContent = 'Good morning.';
+        else if (hours < 17) greetingEl.textContent = 'Good afternoon.';
+        else greetingEl.textContent = 'Good evening.';
+      }
+    }
+    setInterval(updateClockAndGreeting, 1000);
+    updateClockAndGreeting();
+
+    // Mouse Light Reflection System
+    document.addEventListener('mousemove', (e) => {
+      document.querySelectorAll('.mouse-light-target').forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // Theme Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('taskflow_theme', next);
+      updateThemeIcons(next);
+      showToast(`Switched to ${next} theme.`, 'info');
+    }
+
+    function updateThemeIcons(theme) {
+      const sun = document.getElementById('themeSunIcon');
+      const moon = document.getElementById('themeMoonIcon');
+      if (sun && moon) {
+        if (theme === 'dark') {
+          sun.style.display = 'none';
+          moon.style.display = 'block';
+        } else {
+          sun.style.display = 'block';
+          moon.style.display = 'none';
+        }
+      }
+    }
+    updateThemeIcons(document.documentElement.getAttribute('data-theme') || 'light');
+
+    // Real-Time Progress Bar & Insights Calculation
+    function updateDashboardCalculations() {
+      const totalEl = document.getElementById('statTotal');
+      const completedEl = document.getElementById('statCompleted');
+      const total = parseInt(totalEl?.textContent || '0', 10);
+      const completed = parseInt(completedEl?.textContent || '0', 10);
+
+      const progressFill = document.getElementById('completedProgressFill');
+      const subtext = document.getElementById('statCompletedSubtext');
+      const insightsSection = document.getElementById('insightsSection');
+
+      if (total > 0) {
+        const pct = Math.round((completed / total) * 100);
+        if (progressFill) progressFill.style.width = `${pct}%`;
+        if (subtext) subtext.textContent = `${completed} of ${total} tasks (${pct}%)`;
+        
+        if (insightsSection) {
+          insightsSection.style.display = 'flex';
+          const insightRate = document.getElementById('insightRate');
+          if (insightRate) insightRate.textContent = `${pct}%`;
+          
+          // Calculate due stats from cards
+          const cards = document.querySelectorAll('.task-card');
+          let dueTodayCount = 0;
+          let overdueCount = 0;
+          let dueSoonCount = 0;
+          const todayStr = new Date().toISOString().split('T')[0];
+
+          cards.forEach(card => {
+            const due = card.getAttribute('data-due');
+            const status = card.getAttribute('data-status');
+            if (due && due !== 'None' && status !== 'completed') {
+              if (due === todayStr) dueTodayCount++;
+              else if (due < todayStr) overdueCount++;
+              else dueSoonCount++;
+            }
+          });
+
+          const elDueToday = document.getElementById('insightDueToday');
+          const elOverdue = document.getElementById('insightOverdue');
+          const elDueSoon = document.getElementById('insightDueSoon');
+          if (elDueToday) elDueToday.textContent = dueTodayCount;
+          if (elOverdue) elOverdue.textContent = overdueCount;
+          if (elDueSoon) elDueSoon.textContent = dueSoonCount;
+        }
+      } else {
+        if (progressFill) progressFill.style.width = '0%';
+        if (subtext) subtext.textContent = 'Finished tasks';
+        if (insightsSection) insightsSection.style.display = 'none';
+      }
+    }
+    updateDashboardCalculations();
+
+    // Character Counters
+    const titleInput = document.getElementById('taskTitle');
+    const descInput = document.getElementById('taskDesc');
+    const titleCharCount = document.getElementById('titleCharCount');
+    const descCharCount = document.getElementById('descCharCount');
+
+    if (titleInput && titleCharCount) {
+      titleInput.addEventListener('input', () => {
+        titleCharCount.textContent = `${titleInput.value.length}/100`;
+      });
+    }
+
+    if (descInput && descCharCount) {
+      descInput.addEventListener('input', () => {
+        descCharCount.textContent = `${descInput.value.length}/1000`;
+      });
+    }
+
+    // Scroll to Create Section
+    function scrollToCreateTask() {
+      const section = document.getElementById('createSection');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+          const input = document.getElementById('taskTitle');
+          if (input) input.focus();
+        }, 300);
+      }
+    }
+
+    // Filter & Search Engine
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      handleSearchAndFilter();
+    }
+
+    function handleSearchAndFilter() {
+      const query = (document.getElementById('taskSearchInput')?.value || '').toLowerCase().trim();
+      const cards = document.querySelectorAll('.task-card');
+
+      cards.forEach(card => {
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const body = (card.getAttribute('data-body') || '').toLowerCase();
+        const priority = (card.getAttribute('data-priority') || '').toLowerCase();
+        const category = (card.getAttribute('data-category') || '').toLowerCase();
+        const status = (card.getAttribute('data-status') || '').toLowerCase();
+
+        // Search Match
+        const matchesQuery = !query || 
+          title.includes(query) || 
+          body.includes(query) || 
+          priority.includes(query) || 
+          category.includes(query);
+
+        // Filter Match
+        let matchesFilter = true;
+        if (currentFilter === 'pending') matchesFilter = (status === 'pending');
+        else if (currentFilter === 'completed') matchesFilter = (status === 'completed');
+        else if (currentFilter === 'high') matchesFilter = (priority === 'high');
+        else if (currentFilter === 'medium') matchesFilter = (priority === 'medium');
+        else if (currentFilter === 'low') matchesFilter = (priority === 'low');
+
+        if (matchesQuery && matchesFilter) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Sort Engine
+    function handleSort() {
+      const select = document.getElementById('sortSelect');
+      if (!select) return;
+      currentSort = select.value;
+      const container = document.querySelector('.tasks-grid');
+      if (!container) return;
+
+      const cards = Array.from(container.querySelectorAll('.task-card'));
+      cards.sort((a, b) => {
+        if (currentSort === 'newest') {
+          return parseInt(b.getAttribute('data-time') || '0', 10) - parseInt(a.getAttribute('data-time') || '0', 10);
+        }
+        if (currentSort === 'oldest') {
+          return parseInt(a.getAttribute('data-time') || '0', 10) - parseInt(b.getAttribute('data-time') || '0', 10);
+        }
+        if (currentSort === 'az') {
+          return (a.getAttribute('data-title') || '').localeCompare(b.getAttribute('data-title') || '');
+        }
+        if (currentSort === 'za') {
+          return (b.getAttribute('data-title') || '').localeCompare(a.getAttribute('data-title') || '');
+        }
+        if (currentSort === 'dueDate') {
+          const dueA = a.getAttribute('data-due') || '9999';
+          const dueB = b.getAttribute('data-due') || '9999';
+          return dueA.localeCompare(dueB);
+        }
+        return 0;
+      });
+
+      cards.forEach(c => container.appendChild(c));
+    }
+
+    // Real-Time Toggle Completion via Fetch
+    async function toggleCompleteTask(filename) {
+      try {
+        const res = await fetch(`/complete/${encodeURIComponent(filename)}`, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          refreshDashboardData();
+          showToast('Task status updated.', 'success');
+        }
+      } catch (err) {
+        console.error('Toggle error:', err);
+      }
+    }
+
+    // Mini Dropdown Action Menus
+    function toggleCardMenu(e, filename) {
+      e.stopPropagation();
+      const menu = document.getElementById(`menu-${filename}`);
+      const wasOpen = menu?.classList.contains('active');
+      document.querySelectorAll('.card-dropdown-menu').forEach(m => m.classList.remove('active'));
+      if (menu && !wasOpen) menu.classList.add('active');
+    }
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.card-dropdown-menu').forEach(m => m.classList.remove('active'));
+    });
+
+    // Delete Modal
+    function openDeleteModal(filename, title) {
+      document.getElementById('deleteTaskTitle').textContent = title;
+      document.getElementById('deleteForm').action = '/delete/' + encodeURIComponent(filename);
+      document.getElementById('deleteModal').classList.add('active');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('active');
+    }
+
+    document.getElementById('deleteModal')?.addEventListener('click', function(e) {
+      if (e.target === this) closeDeleteModal();
+    });
+
+    // Command Palette (⌘K) Engine
+    function openCommandPalette() {
+      const modal = document.getElementById('commandPaletteModal');
+      const input = document.getElementById('paletteSearchInput');
+      if (modal && input) {
+        modal.classList.add('active');
+        input.value = '';
+        input.focus();
+        filterPaletteCommands();
+      }
+    }
+
+    function closeCommandPalette() {
+      const modal = document.getElementById('commandPaletteModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function handlePaletteOverlayClick(e) {
+      if (e.target.id === 'commandPaletteModal') closeCommandPalette();
+    }
+
+    function filterPaletteCommands() {
+      const query = (document.getElementById('paletteSearchInput')?.value || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.palette-item');
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? 'flex' : 'none';
+      });
+    }
+
+    function executePaletteAction(action) {
+      closeCommandPalette();
+      if (action === 'create') scrollToCreateTask();
+      if (action === 'focusSearch') {
+        const s = document.getElementById('taskSearchInput');
+        if (s) { s.focus(); s.scrollIntoView({ behavior: 'smooth' }); }
+      }
+      if (action === 'filterAll') setFilter('all', document.querySelector('[data-filter="all"]'));
+      if (action === 'filterPending') setFilter('pending', document.querySelector('[data-filter="pending"]'));
+      if (action === 'filterCompleted') setFilter('completed', document.querySelector('[data-filter="completed"]'));
+      if (action === 'filterHigh') setFilter('high', document.querySelector('[data-filter="high"]'));
+      if (action === 'toggleTheme') toggleTheme();
+    }
+
+    // Global Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
+
+      // ⌘K or Ctrl+K to open Palette
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openCommandPalette();
+        return;
+      }
+
+      // ESC to close any modal
+      if (e.key === 'Escape') {
+        closeCommandPalette();
+        closeDeleteModal();
+        return;
+      }
+
+      // 'N' to create task (when not typing)
+      if (!isInput && e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        scrollToCreateTask();
+      }
+
+      // 'T' to toggle theme (when not typing)
+      if (!isInput && e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
+
+    // Real-Time Server-Sent Events (SSE) Engine
+    function initSSE() {
+      const statusPill = document.getElementById('liveSyncPill');
+      const statusText = document.getElementById('sseStatusText');
+
+      if (sseSource) sseSource.close();
+
+      sseSource = new EventSource('/events');
+
+      sseSource.onopen = () => {
+        if (statusPill) {
+          statusPill.className = 'live-indicator';
+          if (statusText) statusText.textContent = 'Live';
+        }
+      };
+
+      sseSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'UPDATE') {
+            refreshDashboardData();
+          }
+        } catch (e) {}
+      };
+
+      sseSource.onerror = () => {
+        if (statusPill) {
+          statusPill.className = 'live-indicator connecting';
+          if (statusText) statusText.textContent = 'Connecting...';
+        }
+      };
+    }
+
+    // Dynamic UI Refresh via /api/tasks (No Full Page Reload)
+    async function refreshDashboardData() {
+      try {
+        const res = await fetch('/api/tasks');
+        if (!res.ok) return;
+        const tasks = await res.json();
+        renderTasksData(tasks);
+      } catch (err) {
+        console.error('SSE refresh error:', err);
+      }
+    }
+
+    function renderTasksData(tasks) {
+      const total = tasks.length;
+      const completed = tasks.filter(t => t.completed).length;
+      const pending = total - completed;
+      const high = tasks.filter(t => t.priority.toLowerCase() === 'high').length;
+
+      // Update Statistic Numbers
+      const statTotal = document.getElementById('statTotal');
+      const statCompleted = document.getElementById('statCompleted');
+      const statPending = document.getElementById('statPending');
+      const statHigh = document.getElementById('statHigh');
+      const filesSubtext = document.getElementById('statFilesSubtext');
+      const sidebarBadge = document.getElementById('sidebarTotalBadge');
+
+      if (statTotal) statTotal.textContent = total;
+      if (statCompleted) statCompleted.textContent = completed;
+      if (statPending) statPending.textContent = pending;
+      if (statHigh) statHigh.textContent = high;
+      if (filesSubtext) filesSubtext.textContent = `${total} files in /tasks`;
+      if (sidebarBadge) sidebarBadge.textContent = total;
+
+      updateDashboardCalculations();
+
+      // Render Cards
+      const container = document.getElementById('tasksGridContainer');
+      if (!container) return;
+
+      if (total === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h3>Your workspace is clear.</h3>
+            <p>No tasks yet. Create your first task to bring your goals into focus.</p>
+            <a href="#createSection" class="glass-btn glass-btn-primary btn-sm">+ Create Task</a>
+          </div>
+        `;
+        return;
+      }
+
+      const cardsHtml = tasks.map(task => {
+        const pClass = task.priority.toLowerCase() === 'high' 
+          ? 'badge-priority-high' 
+          : task.priority.toLowerCase() === 'low' 
+          ? 'badge-priority-low' 
+          : 'badge-priority-medium';
+
+        const cardPClass = `priority-${task.priority.toLowerCase()}`;
+        const catClass = `badge-cat-${task.category.toLowerCase()}`;
+
+        return `
+          <div class="task-card ${cardPClass} ${task.completed ? 'is-completed' : ''}"
+               data-title="${escapeHtml(task.title)}"
+               data-body="${escapeHtml(task.description)}"
+               data-priority="${escapeHtml(task.priority)}"
+               data-category="${escapeHtml(task.category)}"
+               data-status="${task.completed ? 'completed' : 'pending'}"
+               data-time="${task.mtimeMs}"
+               data-due="${escapeHtml(task.dueDate || '')}">
+            <div>
+              <div class="task-card-top">
+                <button type="button" class="toggle-btn ${task.completed ? 'completed' : ''}" 
+                        title="${task.completed ? 'Mark as Pending' : 'Mark as Completed'}"
+                        onclick="toggleCompleteTask('${escapeHtml(task.filename)}')">
+                  ${task.completed ? '✓' : ''}
+                </button>
+                <div class="task-title-area">
+                  <h3 class="task-card-title">${escapeHtml(task.title)}</h3>
+                </div>
+              </div>
+
+              <div class="badges-row">
+                <span class="badge ${pClass}">${escapeHtml(task.priority)}</span>
+                <span class="badge ${catClass}">${escapeHtml(task.category)}</span>
+                ${task.dueDate && task.dueDate !== 'None' ? `<span class="badge badge-due">${calculateDueBadge(task.dueDate)}</span>` : ''}
+              </div>
+
+              <p class="task-card-body">${escapeHtml(task.description)}</p>
+            </div>
+
+            <div class="task-card-footer">
+              <span class="task-date">${escapeHtml(task.createdAt)}</span>
+              <div class="card-actions">
+                <a href="/task/${encodeURIComponent(task.filename)}" class="read-more-btn">Read More</a>
+                
+                <div class="card-menu-container">
+                  <button type="button" class="card-menu-btn" onclick="toggleCardMenu(event, '${escapeHtml(task.filename)}')" title="Actions">
+                    •••
+                  </button>
+                  <div class="card-dropdown-menu" id="menu-${escapeHtml(task.filename)}">
+                    <a href="/task/${encodeURIComponent(task.filename)}" class="dropdown-item">📄 View Document</a>
+                    <a href="/edit/${encodeURIComponent(task.filename)}" class="dropdown-item">✏️ Edit Task</a>
+                    <button type="button" class="dropdown-item" onclick="toggleCompleteTask('${escapeHtml(task.filename)}')">
+                      ${task.completed ? '⏳ Mark Pending' : '✓ Mark Complete'}
+                    </button>
+                    <button type="button" class="dropdown-item danger" onclick="openDeleteModal('${escapeHtml(task.filename)}', '${escapeHtml(task.title)}')">
+                      🗑️ Delete File
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `<div class="tasks-grid">${cardsHtml}</div>`;
+      handleSearchAndFilter();
+      handleSort();
+    }
+
+    function calculateDueBadge(dueDateStr) {
+      if (!dueDateStr || dueDateStr === 'None') return '';
+      const due = new Date(dueDateStr + 'T00:00:00');
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      const diffDays = Math.round((due - now) / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) return `Overdue (${Math.abs(diffDays)}d)`;
+      if (diffDays === 0) return 'Due Today';
+      if (diffDays === 1) return 'Due Tomorrow';
+      return `Due in ${diffDays}d`;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Start Real-Time SSE
+    initSSE();
+  </script>
+</body>
+</html>

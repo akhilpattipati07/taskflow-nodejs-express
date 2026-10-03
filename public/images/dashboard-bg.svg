@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+  <defs>
+    <!-- Warm Sunlight glow upper right -->
+    <radialGradient id="sunGlow" cx="88%" cy="8%" r="65%">
+      <stop offset="0%" stop-color="#f5e8d0" stop-opacity="0.55"/>
+      <stop offset="40%" stop-color="#f9f5ed" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#f5f1e8" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Warm beige ambient glow bottom left -->
+    <radialGradient id="ambientGlow" cx="12%" cy="90%" r="60%">
+      <stop offset="0%" stop-color="#ebe2d0" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#f7f4ec" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#faf8f2" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Center soft diffuse light -->
+    <radialGradient id="centerGlow" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#f5f1e8" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Minimalist Architectural Grid Pattern -->
+    <pattern id="archGrid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#786446" stroke-width="0.5" stroke-opacity="0.035"/>
+    </pattern>
+
+    <!-- Fine Linen/Stone Texture Filter -->
+    <filter id="noiseFilter" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.5   0 0 0 0 0.45   0 0 0 0 0.4  0 0 0 0.025 0" in="noise" result="coloredNoise"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+
+  <!-- Base luxury warm ivory / cream layer -->
+  <rect width="1920" height="1080" fill="#F7F4EC"/>
+
+  <!-- Architectural Subtle Grid -->
+  <rect width="1920" height="1080" fill="url(#archGrid)"/>
+
+  <!-- Radial Sunlight & Ambient Lighting Layers -->
+  <rect width="1920" height="1080" fill="url(#sunGlow)"/>
+  <rect width="1920" height="1080" fill="url(#ambientGlow)"/>
+  <rect width="1920" height="1080" fill="url(#centerGlow)"/>
+
+  <!-- Architectural Curves & Minimalist Structural Accents -->
+  <circle cx="1650" cy="180" r="420" stroke="#a39276" stroke-opacity="0.06" stroke-width="1" fill="none"/>
+  <circle cx="1650" cy="180" r="620" stroke="#a39276" stroke-opacity="0.04" stroke-width="1" fill="none"/>
+  <circle cx="220" cy="860" r="480" stroke="#b5a589" stroke-opacity="0.05" stroke-width="1" fill="none"/>
+  <path d="M 0 420 C 420 360, 980 480, 1920 380" stroke="#9e8d71" stroke-opacity="0.04" stroke-width="1.2" fill="none"/>
+  <path d="M 0 460 C 460 400, 1020 520, 1920 420" stroke="#9e8d71" stroke-opacity="0.025" stroke-width="0.8" fill="none"/>
+
+  <!-- Noise Texture for tactile stone/paper feel -->
+  <rect width="1920" height="1080" filter="url(#noiseFilter)" fill="#000000"/>
+</svg>

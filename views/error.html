@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Not Found - Taskflow</title>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('taskflow_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <div class="bg-overlay"></div>
+
+  <div class="detail-container" style="text-align: center; margin-top: 60px;">
+    <div class="detail-card" style="padding: 44px 28px;">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--danger-bg); border: 1px solid var(--danger-border); color: var(--danger); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+
+      <h1 style="font-size: 1.6rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
+        Task Not Found
+      </h1>
+      <p style="color: var(--muted); font-size: 0.95rem; max-width: 440px; margin: 0 auto 24px;">
+        {{ERROR_MESSAGE}}
+      </p>
+
+      <a href="/" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Dashboard
+      </a>
+    </div>
+  </div>
+</body>
+</html>

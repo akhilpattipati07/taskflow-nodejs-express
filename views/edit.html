@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Task - {{TASK_TITLE}}</title>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('taskflow_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <div class="bg-overlay"></div>
+
+  <div class="detail-container">
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="detail-title-group">
+          <h1>Edit Task</h1>
+          <p style="color: var(--text-secondary); font-size: 0.88rem;">
+            Modifying file: <span class="badge badge-file">{{FILE_NAME}}</span>
+          </p>
+        </div>
+        <a href="/task/{{FILE_NAME}}" class="btn btn-secondary btn-sm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          Cancel
+        </a>
+      </div>
+
+      <!-- Edit Form -->
+      <form action="/edit/{{FILE_NAME}}" method="POST" id="editForm">
+        <div class="form-group">
+          <div class="form-label-row">
+            <label class="form-label" for="editTitle">Task Title *</label>
+            <span class="char-counter" id="titleCounter">0/100</span>
+          </div>
+          <input 
+            type="text" 
+            id="editTitle" 
+            name="title" 
+            class="form-control" 
+            value="{{EDIT_TITLE}}" 
+            required
+            maxlength="100"
+          >
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="form-label" for="editCategory">Category</label>
+            <select id="editCategory" name="category" class="form-control">
+              <option value="College" {{SELECT_CAT_COLLEGE}}>College</option>
+              <option value="Project" {{SELECT_CAT_PROJECT}}>Project</option>
+              <option value="Work" {{SELECT_CAT_WORK}}>Work</option>
+              <option value="Personal" {{SELECT_CAT_PERSONAL}}>Personal</option>
+              <option value="Other" {{SELECT_CAT_OTHER}}>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editPriority">Priority</label>
+            <select id="editPriority" name="priority" class="form-control">
+              <option value="Low" {{SELECT_PRIORITY_LOW}}>Low</option>
+              <option value="Medium" {{SELECT_PRIORITY_MEDIUM}}>Medium</option>
+              <option value="High" {{SELECT_PRIORITY_HIGH}}>High</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editCompleted">Status</label>
+            <select id="editCompleted" name="completed" class="form-control">
+              <option value="false" {{SELECT_STATUS_PENDING}}>Pending</option>
+              <option value="true" {{SELECT_STATUS_COMPLETED}}>Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="editDueDate">Due Date (Optional)</label>
+          <input 
+            type="date" 
+            id="editDueDate" 
+            name="dueDate" 
+            class="form-control" 
+            value="{{EDIT_DUE_DATE}}"
+          >
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-row">
+            <label class="form-label" for="editDesc">Task Description *</label>
+            <span class="char-counter" id="descCounter">0/1000</span>
+          </div>
+          <textarea 
+            id="editDesc" 
+            name="description" 
+            class="form-control" 
+            rows="6" 
+            required
+            maxlength="1000"
+          >{{EDIT_DESCRIPTION}}</textarea>
+        </div>
+
+        <div class="detail-footer-actions" style="margin-top: 24px;">
+          <a href="/task/{{FILE_NAME}}" class="btn btn-secondary">
+            &larr; Back to Task
+          </a>
+          <button type="submit" class="btn btn-primary" id="saveBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            Save Changes (fs.writeFile)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const titleInput = document.getElementById('editTitle');
+    const descInput = document.getElementById('editDesc');
+    const titleCounter = document.getElementById('titleCounter');
+    const descCounter = document.getElementById('descCounter');
+
+    function updateCounters() {
+      titleCounter.textContent = `${titleInput.value.length}/100`;
+      descCounter.textContent = `${descInput.value.length}/1000`;
+    }
+
+    titleInput.addEventListener('input', updateCounters);
+    descInput.addEventListener('input', updateCounters);
+    updateCounters();
+  </script>
+</body>
+</html>
